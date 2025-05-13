@@ -11,10 +11,27 @@ use App\Helpers\TextHelper;
 
 class EvolucaoController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
         $modelos = auth()->user()->modelos()->latest()->get();
-        return view('evolucoes.create', compact('modelos'));
+        $placeholders = [];
+
+        if ($request->filled('modelo_fixo')) {
+            $fixos = (new ModeloEvolucaoService())->getFixos();
+            $conteudo = $fixos[$request->modelo_fixo] ?? '';
+            preg_match_all('/{{(.*?)}}/', $conteudo, $matches);
+            $placeholders = array_map('trim', $matches[1]);
+        }
+
+        if ($request->filled('modelo_id')) {
+            $modelo = Modelo::find($request->modelo_id);
+            if ($modelo) {
+                preg_match_all('/{{(.*?)}}/', $modelo->conteudo, $matches);
+                $placeholders = array_map('trim', $matches[1]);
+            }
+        }
+
+        return view('evolucoes.create', compact('modelos', 'placeholders'));
     }
 
     public function store(Request $request, ModeloEvolucaoService $modeloService)
@@ -56,9 +73,9 @@ class EvolucaoController extends Controller
             return back()->withErrors(['modelo' => 'Você precisa selecionar um modelo fixo ou personalizado.']);
         }
 
-        // Aplica os tratamentos de gênero e formatação
-        $conteudo = TextHelper::tratarGeneroPaciente($conteudo, $request->sexo_paciente);
-        $conteudo = TextHelper::tratarGeneroAcompanhante($conteudo, $request->sexo_acompanhante);
+        // Aplica os tratamentos de gênero e formatação com segurança
+        $conteudo = TextHelper::tratarGeneroPaciente($conteudo, $request->sexo_paciente ?? '');
+        $conteudo = TextHelper::tratarGeneroAcompanhante($conteudo, $request->sexo_acompanhante ?? '');
         $conteudo = TextHelper::formatarTexto($conteudo, $request->paciente);
 
         $evolucao = Evolucao::create([
@@ -125,7 +142,7 @@ class EvolucaoController extends Controller
 
         $pdf = Pdf::loadView('evolucoes.exportar_unico', compact('evolucao'));
 
-        return $pdf->download('evolucao-'.$evolucao->id.'.pdf');
+        return $pdf->download('evolucao-' . $evolucao->id . '.pdf');
     }
 
     public function resultado($id)
@@ -146,5 +163,4 @@ class EvolucaoController extends Controller
             ->route('evolucoes.index')
             ->with('success', 'Evolução excluída com sucesso!');
     }
-
 }

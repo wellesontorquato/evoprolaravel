@@ -2,8 +2,37 @@
 
 @section('content')
 <div class="container py-4">
+    <form action="{{ route('evolucoes.create') }}" method="GET" class="p-4 rounded-3 shadow-sm bg-white border mb-4">
+        <h5 class="fw-bold section-title mb-3">🧑‍⚕️ Escolha o Modelo de Evolução</h5>
+        <hr class="mb-3 mt-0 section-line">
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <label class="form-label field-label">Modelo Fixo</label>
+                <select name="modelo_fixo" class="form-select input-purple" onchange="this.form.submit()">
+                    <option value="">Selecionar modelo fixo</option>
+                    @include('evolucoes.partials.modelos-fixos')
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label field-label">Modelo Personalizado</label>
+                <select name="modelo_id" class="form-select input-purple" onchange="this.form.submit()">
+                    <option value="">Selecionar modelo personalizado</option>
+                    @foreach($modelos as $modelo)
+                        <option value="{{ $modelo->id }}" {{ request('modelo_id') == $modelo->id ? 'selected' : '' }}>
+                            {{ $modelo->titulo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </form>
+
     <form action="{{ route('evolucoes.store') }}" method="POST" class="p-4 rounded-3 shadow-sm bg-white border">
         @csrf
+
+        <!-- Dados ocultos do modelo selecionado -->
+        <input type="hidden" name="modelo_fixo" value="{{ request('modelo_fixo') }}">
+        <input type="hidden" name="modelo_id" value="{{ request('modelo_id') }}">
 
         <!-- Sessão 1 -->
         <h5 class="fw-bold section-title mb-3">👩‍⚕️ Dados do Paciente</h5>
@@ -11,32 +40,13 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label field-label">Nome do Paciente</label>
-                <input type="text" name="paciente" id="input_paciente" class="form-control input-purple" placeholder="Digite o nome do paciente">
+                <input type="text" name="paciente" id="input_paciente" class="form-control input-purple" placeholder="Digite o nome do paciente" {{ !in_array('paciente', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
             <div class="col-md-3">
                 <label class="form-label field-label">Sexo</label>
-                <select name="sexo_paciente" id="input_sexo_paciente" class="form-select input-purple">
+                <select name="sexo_paciente" id="input_sexo_paciente" class="form-select input-purple" {{ !in_array('sexo_paciente', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
-                </select>
-            </div>
-
-            <h5 class="fw-bold section-title mb-3">🧑‍🤝 Modelos de evolução</h5>
-            <hr class="mb-3 mt-0 section-line">
-            <div class="col-md-4">
-                <label class="form-label field-label">Modelo Fixo</label>
-                <select name="modelo_fixo" id="modelo_fixo" class="form-select input-purple" data-type="fixo">
-                    <option value="">Selecionar modelo fixo</option>
-                    @include('evolucoes.partials.modelos-fixos')
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label field-label">Modelo Personalizado</label>
-                <select name="modelo_id" id="modelo_personalizado" class="form-select input-purple" data-type="personalizado">
-                    <option value="">Selecionar modelo personalizado</option>
-                    @foreach($modelos as $modelo)
-                        <option value="{{ $modelo->id }}">{{ $modelo->titulo }}</option>
-                    @endforeach
                 </select>
             </div>
         </div>
@@ -47,15 +57,15 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label field-label">Nome do Acompanhante</label>
-                <input type="text" name="acompanhante" id="input_acompanhante" class="form-control input-purple" placeholder="Nome do acompanhante">
+                <input type="text" name="acompanhante" id="input_acompanhante" class="form-control input-purple" {{ !in_array('acompanhante', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
             <div class="col-md-3">
                 <label class="form-label field-label">Parentesco</label>
-                <input type="text" name="parentesco" id="input_parentesco" class="form-control input-purple" placeholder="Parentesco">
+                <input type="text" name="parentesco" id="input_parentesco" class="form-control input-purple" {{ !in_array('parentesco', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
             <div class="col-md-3">
                 <label class="form-label field-label">Sexo</label>
-                <select name="sexo_acompanhante" id="input_sexo_acompanhante" class="form-select input-purple">
+                <select name="sexo_acompanhante" id="input_sexo_acompanhante" class="form-select input-purple" {{ !in_array('sexo_acompanhante', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
                 </select>
@@ -68,11 +78,11 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label field-label">Estado do Paciente</label>
-                <input type="text" name="estado_paciente" id="input_estado_paciente" class="form-control input-purple" placeholder="ex.: Lúcida, orientada, colaborativa">
+                <input type="text" name="estado_paciente" id="input_estado_paciente" class="form-control input-purple" {{ !in_array('estado_paciente', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
             <div class="col-md-6">
                 <label class="form-label field-label">Motivo da Internação</label>
-                <input type="text" name="motivo_internacao" id="input_motivo_internacao" class="form-control input-purple" placeholder="ex.: dores na nuca">
+                <input type="text" name="motivo_internacao" id="input_motivo_internacao" class="form-control input-purple" {{ !in_array('motivo_internacao', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
         </div>
 
@@ -82,19 +92,19 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label field-label">Com quem Reside</label>
-                <input type="text" name="com_quem_reside" id="input_com_quem_reside" class="form-control input-purple" placeholder="ex.: esposa e 2 filhos">
+                <input type="text" name="com_quem_reside" id="input_com_quem_reside" class="form-control input-purple" {{ !in_array('com_quem_reside', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
             <div class="col-md-6">
                 <label class="form-label field-label">Fonte de Renda</label>
-                <input type="text" name="fonte_renda" id="input_fonte_renda" class="form-control input-purple" placeholder="ex.: aposentadoria">
+                <input type="text" name="fonte_renda" id="input_fonte_renda" class="form-control input-purple" {{ !in_array('fonte_renda', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
             <div class="col-md-6 mt-3">
                 <label class="form-label field-label">Rede de Apoio</label>
-                <input type="text" name="rede_apoio" id="input_rede_apoio" class="form-control input-purple" placeholder="ex.: mãe e irmã">
+                <input type="text" name="rede_apoio" id="input_rede_apoio" class="form-control input-purple" {{ !in_array('rede_apoio', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
             <div class="col-md-6 mt-3">
-                <label class="form-label field-label">Local de Origem (se aplicável)</label>
-                <input type="text" name="local_origem" id="input_local_origem" class="form-control input-purple" placeholder="ex.: UPA Benedito Bentes">
+                <label class="form-label field-label">Local de Origem</label>
+                <input type="text" name="local_origem" id="input_local_origem" class="form-control input-purple" {{ !in_array('local_origem', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
             </div>
         </div>
 
@@ -106,67 +116,6 @@
         </div>
     </form>
 </div>
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modeloFixoSelect = document.getElementById('modelo_fixo');
-        const modeloPersonalizadoSelect = document.getElementById('modelo_personalizado');
-
-        const inputs = [
-            'paciente', 'sexo_paciente', 'estado_paciente', 'motivo_internacao',
-            'acompanhante', 'sexo_acompanhante', 'parentesco',
-            'com_quem_reside', 'rede_apoio', 'fonte_renda', 'local_origem'
-        ];
-
-        function setDisabledInputs(placeholders = []) {
-            inputs.forEach(name => {
-                const el = document.getElementById('input_' + name);
-                if (el) {
-                    el.disabled = !placeholders.includes(name);
-                    if (el.disabled) el.value = '';
-                }
-            });
-        }
-
-        async function getPlaceholders(tipo, valor) {
-            if (!valor) return [];
-
-            const url = tipo === 'fixo'
-                ? `/api/modelos-fixos/${valor}/placeholders`
-                : `/api/modelos-personalizados/${valor}/placeholders`;
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Erro na requisição');
-
-                const data = await response.json();
-                return data.placeholders || [];
-            } catch (e) {
-                console.error('Erro ao buscar placeholders:', e);
-                return [];
-            }
-        }
-
-        async function atualizarCampos(tipo, valor) {
-            const placeholders = await getPlaceholders(tipo, valor);
-            setDisabledInputs(placeholders);
-        }
-
-        modeloFixoSelect.addEventListener('change', function () {
-            modeloPersonalizadoSelect.value = '';
-            atualizarCampos('fixo', this.value);
-        });
-
-        modeloPersonalizadoSelect.addEventListener('change', function () {
-            modeloFixoSelect.value = '';
-            atualizarCampos('personalizado', this.value);
-        });
-
-        setDisabledInputs([]); // desativa todos inicialmente
-    });
-</script>
-@endpush
 
 <style>
     .text-purple { color: #7743DB; }
@@ -184,6 +133,13 @@
         background-color: #F8F8FA;
         border: 1px solid #ddd;
         border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+    .input-disabled {
+        background-color: #e9ecef !important;
+        cursor: not-allowed !important;
+        pointer-events: none; /* impede interações em select */
+        color: #6c757d !important;
     }
     .section-line { border-top: 2px solid #7b689e !important; }
     .section-title { color: #7b689e !important; }
