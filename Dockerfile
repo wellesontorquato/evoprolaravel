@@ -17,15 +17,18 @@ COPY . .
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Permissões
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
+# Permissões da aplicação
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www \
+    && chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
 
-# Copia config do nginx e supervisord
+# Copia configurações do nginx e supervisord
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisord.conf
 
-# Porta exposta
-EXPOSE 80
+# Porta correta para Railway
+EXPOSE 8080
 
-# Comando de inicialização
+# Comando principal
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
