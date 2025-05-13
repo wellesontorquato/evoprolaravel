@@ -1,6 +1,6 @@
 <!-- resources/views/layouts/sidebar.blade.php -->
       <div class="sidebar">
-            <h5 class="text-center fw-bold text-purple mb-4">EvoPro</h5>
+            <h5 class="text-center fw-bold text-purple mb-4">EvoPlus</h5>
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">🏠 Dashboard</a>
             <a href="{{ route('evolucoes.index') }}" class="{{ request()->routeIs('evolucoes.*') ? 'active' : '' }}">📝 Minhas Evoluções</a>
             <a href="{{ route('modelos.index') }}" class="{{ request()->routeIs('modelos.*') ? 'active' : '' }}">🧩 Meus Modelos</a>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EvoPro - Evoluções Sociais</title>
+  <title>EvoPlus - Evoluções Sociais</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
 
@@ -109,7 +109,7 @@
   <nav class="navbar navbar-light bg-white shadow-sm sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="{{ asset('images/logo_evopro_semfundo.png') }}" alt="Logo EvoPro" style="height: 40px;">
+        <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="Logo EvoPlus" style="height: 40px;">
     </a>
       <div>
         <a href="{{ route('login') }}" class="btn btn-evo-light me-2">Entrar</a>
@@ -122,7 +122,7 @@
   <section class="hero animate__animated animate__fadeInDown">
     <div class="container">
       <h1 class="display-7 fw-bold" style="color:#7743DB">Evoluções para quem cuida de pessoas, com mais rapidez e organização</h1>
-      <p class="lead mb-4">O <strong>EvoPro</strong> é uma plataforma para todos os profissionais da <strong>Área de Saúde</strong> que desejam gerar, organizar e armazenar evoluções com praticidade e segurança.</p>
+      <p class="lead mb-4">O <strong>EvoPlus</strong> é uma plataforma para todos os profissionais da <strong>Área de Saúde</strong> que desejam gerar, organizar e armazenar evoluções com praticidade e segurança.</p>
       <a href="{{ route('register') }}" class="btn btn-evo btn-lg me-2">✨ Criar Conta Grátis</a>
       <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-lg">Já tenho conta</a>
     </div>
@@ -131,7 +131,7 @@
   <!-- Benefícios -->
   <section class="py-5" style="background-color: #F3EEFF;">
     <div class="container text-center">
-      <h3 class="text-purple mb-4" style="color: #7743DB">Por que usar o EvoPro?</h3>
+      <h3 class="text-purple mb-4" style="color: #7743DB">Por que usar o EvoPlus?</h3>
       <div class="row g-4">
         <div class="col-md-4">
           <div class="p-4 bg-white rounded shadow-sm h-100">
@@ -157,7 +157,7 @@
 
   <!-- Painel com efeito 3D -->
   <section class="my-12 text-center">
-    <h3 class="text-xl font-semibold text-purple-700 mb-4">🖥️ Veja como é o painel do EvoPro</h3>
+    <h3 class="text-xl font-semibold text-purple-700 mb-4">🖥️ Veja como é o painel do EvoPlus</h3>
 
     <div class="carousel-box">
         <div class="carousel-inner" id="carouselInner">
@@ -183,7 +183,7 @@
 
   <!-- Rodapé -->
   <footer>
-    <p>&copy; {{ date('Y') }} EvoPro — Feito com 💜 para quem evolui.</p>
+    <p>&copy; {{ date('Y') }} EvoPlus — Feito com 💜 para quem evolui.</p>
   </footer>
 
   <script>

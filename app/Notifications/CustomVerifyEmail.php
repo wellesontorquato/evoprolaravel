@@ -12,7 +12,7 @@ class CustomVerifyEmail extends VerifyEmail
         $verificationUrl = $this->verificationUrl($notifiable);
 
         return (new MailMessage)
-            ->subject('Verifique seu Email - EvoPro')
+            ->subject('Verifique seu Email - EvoPlus')
             ->view('emails.custom-verify', ['url' => $verificationUrl]);
     }
 }

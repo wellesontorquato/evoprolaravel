@@ -150,7 +150,7 @@ CRESS <span class="text-danger">@{{cress}}</span> – <span class="text-danger">
                             <li><code>orientado(a)</code>, <code>acompanhado(a)</code> etc.</li>
                         </ul>
                     </li>
-                    <li>🧠 Tratamento semântico automático via <strong class="text-danger">EvoPro</strong>:
+                    <li>🧠 Tratamento semântico automático via <strong class="text-danger">EvoPlus</strong>:
                         <ul class="ms-3">
                             <li>Paciente: “O(a) paciente”, “do(a) paciente”, “encontrado(a)”, “transferido(a)”...</li>
                             <li>Acompanhante: “seu(sua) acompanhante”, “ao(à) acompanhante”</li>

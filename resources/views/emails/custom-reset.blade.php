@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Redefinição de Senha - EvoPro</title>
+  <title>Redefinição de Senha - EvoPlus</title>
   <style>
     body {
       background: #f8f6ff;
@@ -41,9 +41,9 @@
 </head>
 <body>
   <div class="container">
-    <img src="{{ asset('images/logo_evopro_semfundo.png') }}" alt="EvoPro Logo" class="logo">
+    <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="EvoPlus Logo" class="logo">
     <h2>Olá!</h2>
-    <p>Recebemos uma solicitação para redefinir a senha da sua conta no <strong>EvoPro</strong>.</p>
+    <p>Recebemos uma solicitação para redefinir a senha da sua conta no <strong>EvoPlus</strong>.</p>
     <p>Para continuar, clique no botão abaixo:</p>
     <a href="{{ $url }}" class="btn">Redefinir Senha</a>
     <p>Se você não solicitou essa alteração, nenhuma ação é necessária.</p>

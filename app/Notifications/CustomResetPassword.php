@@ -15,7 +15,7 @@ class CustomResetPassword extends ResetPassword
         ], false));
 
         return (new MailMessage)
-            ->subject('Redefinição de Senha - EvoPro')
+            ->subject('Redefinição de Senha - EvoPlus')
             ->view('emails.custom-reset', ['url' => $url]);
     }
 }

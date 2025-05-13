@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - EvoPro</title>
+    <title>Login - EvoPlus</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
     <style>
@@ -46,7 +46,7 @@
 </head>
 <body>
     <div class="login-card">
-        <img src="{{ asset('images/logo_evopro_semfundo.png') }}" alt="Logo EvoPro" class="logo">
+        <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="Logo EvoPlus" class="logo">
 
         @if (session('status'))
             <script>
