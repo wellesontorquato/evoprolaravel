@@ -108,6 +108,7 @@
 </div>
 
 @push('scripts')
+@verbatim
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
         const modeloFixoSelect = document.getElementById('modelo_fixo');
@@ -122,7 +123,8 @@
         function setDisabledInputs(placeholders = []) {
             inputs.forEach(name => {
                 const el = document.getElementById('input_' + name);
-                if (el) el.disabled = !placeholders.includes(`{{${name}}}`);
+                const tag = `{{${name}}}`;
+                if (el) el.disabled = !placeholders.includes(tag);
             });
         }
 
@@ -163,6 +165,7 @@
         setDisabledInputs([]);
     });
 </script>
+@endverbatim
 @endpush
 
 <style>
