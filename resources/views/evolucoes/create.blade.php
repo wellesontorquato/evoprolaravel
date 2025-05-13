@@ -108,9 +108,8 @@
 </div>
 
 @push('scripts')
-@verbatim
 <script>
-    document.addEventListener('DOMContentLoaded', async function () {
+    document.addEventListener('DOMContentLoaded', function () {
         const modeloFixoSelect = document.getElementById('modelo_fixo');
         const modeloPersonalizadoSelect = document.getElementById('modelo_personalizado');
 
@@ -121,23 +120,33 @@
         ];
 
         function setDisabledInputs(placeholders = []) {
+            // Primeiro habilita tudo
             inputs.forEach(name => {
                 const el = document.getElementById('input_' + name);
-                const tag = `{{${name}}}`;
-                if (el) el.disabled = !placeholders.includes(tag);
+                if (el) el.disabled = false;
+            });
+
+            // Depois desabilita os que não existem no modelo
+            inputs.forEach(name => {
+                const el = document.getElementById('input_' + name);
+                const placeholder = `{{${name}}}`;
+                if (el && !placeholders.includes(placeholder)) {
+                    el.disabled = true;
+                    el.value = '';
+                }
             });
         }
 
         async function getPlaceholders(tipo, valor) {
             if (!valor) return [];
 
-            try {
-                const url = tipo === 'fixo'
-                    ? `/api/modelos-fixos/${valor}/placeholders`
-                    : `/api/modelos-personalizados/${valor}/placeholders`;
+            const url = tipo === 'fixo'
+                ? `/api/modelos-fixos/${valor}/placeholders`
+                : `/api/modelos-personalizados/${valor}/placeholders`;
 
+            try {
                 const response = await fetch(url);
-                if (!response.ok) return [];
+                if (!response.ok) throw new Error('Erro na requisição');
 
                 const data = await response.json();
                 return data.placeholders || [];
@@ -162,11 +171,12 @@
             atualizarCampos('personalizado', this.value);
         });
 
+        // Inicialmente, desabilita todos até o usuário escolher
         setDisabledInputs([]);
     });
 </script>
-@endverbatim
 @endpush
+
 
 <style>
     .text-purple { color: #7743DB; }
