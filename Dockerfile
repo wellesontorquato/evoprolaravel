@@ -1,33 +1,31 @@
-# Etapa base com PHP-FPM
 FROM php:8.2-fpm
 
-# Instala dependências necessárias
+# Instala dependências do sistema
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
     nginx supervisor && \
     docker-php-ext-install pdo pdo_mysql zip mbstring xml
 
-# Instala Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Cria diretórios de log
+RUN mkdir -p /var/log/supervisor
 
-# Define diretório de trabalho
-WORKDIR /var/www/html
-
-# Copia código do projeto para dentro do container
+# Copia arquivos da aplicação
+WORKDIR /var/www
 COPY . .
 
-# Instala dependências PHP do Laravel
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer install --no-dev --optimize-autoloader
 
-# Permissões para diretórios do Laravel
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Permissões
+RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
 
-# Copia arquivos de configuração NGINX e Supervisord
+# Copia config do nginx e supervisord
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisord.conf
 
-# Expõe a porta padrão do NGINX
+# Porta exposta
 EXPOSE 80
 
-# Inicia supervisord (que gerencia nginx + php-fpm)
+# Comando de inicialização
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
