@@ -1,7 +1,7 @@
 <!-- resources/views/layouts/sidebar.blade.php -->
       <div class="sidebar">
-            <div class="text-center mb-4">
-                <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="EvoPlus" style="max-height: 60px;">
+            <div class="text-center my-3 px-3">
+                <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="EvoPlus" style="max-width: 140px; height: auto;">
             </div>
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">🏠 Dashboard</a>
             <a href="{{ route('evolucoes.index') }}" class="{{ request()->routeIs('evolucoes.*') ? 'active' : '' }}">📝 Minhas Evoluções</a>
