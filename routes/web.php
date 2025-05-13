@@ -8,21 +8,22 @@ use App\Http\Controllers\{
     DashboardController
 };
 
+// Página pública
 Route::get('/', function () {
     return view('welcome');
 })->middleware('guest')->name('welcome');
 
-// Dashboard
+// Dashboard (autenticado e verificado)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-// Rotas protegidas (usuário autenticado e verificado)
+// Rotas protegidas
 Route::middleware(['auth', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Perfil
+    | Perfil do Usuário
     |--------------------------------------------------------------------------
     */
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{evolucao}/pdf', [EvolucaoController::class, 'exportarPdfUnico'])->name('exportar.pdf.unico');
     });
 
+    // Resultado de uma evolução
     Route::get('/resultado/{id}', [EvolucaoController::class, 'resultado'])->name('evolucoes.resultado');
 
     /*
@@ -62,28 +64,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | API: Placeholders dinâmicos para inputs
+    | API para placeholders dinâmicos
     |--------------------------------------------------------------------------
     */
+
+    // Modelos fixos
     Route::get('/api/modelos-fixos/{key}/placeholders', function ($key) {
         $service = new \App\Services\ModeloEvolucaoService();
         $modelo = $service->getFixos()[$key] ?? '';
         preg_match_all('/{{(.*?)}}/', $modelo, $matches);
-        return response()->json([
-            'placeholders' => array_map(fn($p) => '{{' . trim($p) . '}}', $matches[1])
-        ]);
+        return response()->json(['placeholders' => array_map('trim', $matches[1])]);
     });
 
+    // Modelos personalizados
     Route::get('/api/modelos-personalizados/{id}/placeholders', function ($id) {
         $modelo = \App\Models\ModeloEvolucao::find($id);
         if (!$modelo) {
             return response()->json(['placeholders' => []]);
         }
         preg_match_all('/{{(.*?)}}/', $modelo->conteudo, $matches);
-        return response()->json([
-            'placeholders' => array_map(fn($p) => '{{' . trim($p) . '}}', $matches[1])
-        ]);
+        return response()->json(['placeholders' => array_map('trim', $matches[1])]);
     });
-});
+
+}); // <- Fim do middleware de rotas protegidas
 
 require __DIR__.'/auth.php';

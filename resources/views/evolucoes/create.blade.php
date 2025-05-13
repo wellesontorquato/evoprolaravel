@@ -120,19 +120,11 @@
         ];
 
         function setDisabledInputs(placeholders = []) {
-            // Primeiro habilita tudo
             inputs.forEach(name => {
                 const el = document.getElementById('input_' + name);
-                if (el) el.disabled = false;
-            });
-
-            // Depois desabilita os que não existem no modelo
-            inputs.forEach(name => {
-                const el = document.getElementById('input_' + name);
-                const placeholder = '{' + '{' + name + '}' + '}';
-                if (el && !placeholders.includes(placeholder)) {
-                    el.disabled = true;
-                    el.value = '';
+                if (el) {
+                    el.disabled = !placeholders.includes(name);
+                    if (el.disabled) el.value = '';
                 }
             });
         }
@@ -171,12 +163,10 @@
             atualizarCampos('personalizado', this.value);
         });
 
-        // Inicialmente, desabilita todos até o usuário escolher
-        setDisabledInputs([]);
+        setDisabledInputs([]); // desativa todos inicialmente
     });
 </script>
 @endpush
-
 
 <style>
     .text-purple { color: #7743DB; }
