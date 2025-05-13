@@ -129,7 +129,7 @@
             // Depois desabilita os que não existem no modelo
             inputs.forEach(name => {
                 const el = document.getElementById('input_' + name);
-                const placeholder = `{{${name}}}`;
+                const placeholder = '{' + '{' + name + '}' + '}';
                 if (el && !placeholders.includes(placeholder)) {
                     el.disabled = true;
                     el.value = '';
