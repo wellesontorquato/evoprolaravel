@@ -1,7 +1,8 @@
 <!-- resources/views/layouts/sidebar.blade.php -->
       <div class="sidebar">
             <div class="d-flex flex-column justify-content-center align-items-center py-4" style="min-height: 150px;">
-                <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="EvoPlus" style="max-width: 100px; height: auto;">
+                <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="EvoPlus"
+                    class="logo-animated" style="max-width: 100px; height: auto;">
             </div>
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">🏠 Dashboard</a>
             <a href="{{ route('evolucoes.index') }}" class="{{ request()->routeIs('evolucoes.*') ? 'active' : '' }}">📝 Minhas Evoluções</a>
@@ -48,5 +49,14 @@
         }
         .text-purple {
             color: #7743DB !important;
+        }
+
+        .logo-animated {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .logo-animated:hover {
+            transform: scale(1.07);
+            filter: brightness(1.1);
         }
 </style>

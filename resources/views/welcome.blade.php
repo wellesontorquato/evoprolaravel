@@ -102,15 +102,25 @@
     .carousel-dot.active {
       background-color: #7743DB;
     }
+
+    .logo-hover {
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .logo-hover:hover {
+        transform: scale(1.07);
+        filter: brightness(1.1);
+    }
+
   </style>
 </head>
 <body>
   <!-- Header -->
   <nav class="navbar navbar-light bg-white shadow-sm sticky-top">
     <div class="container d-flex justify-content-between align-items-center">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="Logo EvoPlus" style="height: 40px;">
-    </a>
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ asset('images/logo_evoplus_semfundo.png') }}" alt="Logo EvoPlus" class="logo-hover" style="height: 40px;">
+        </a>
       <div>
         <a href="{{ route('login') }}" class="btn btn-evo-light me-2">Entrar</a>
         <a href="{{ route('register') }}" class="btn btn-evo">Criar Conta</a>

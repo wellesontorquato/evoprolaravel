@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomResetPassword;
 use App\Notifications\CustomVerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
