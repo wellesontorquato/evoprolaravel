@@ -1,0 +1,150 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Evolucao;
+use App\Models\Modelo;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\ModeloEvolucaoService;
+use App\Helpers\TextHelper;
+
+class EvolucaoController extends Controller
+{
+    public function create()
+    {
+        $modelos = auth()->user()->modelos()->latest()->get();
+        return view('evolucoes.create', compact('modelos'));
+    }
+
+    public function store(Request $request, ModeloEvolucaoService $modeloService)
+    {
+        $request->validate([
+            'modelo_id' => 'nullable|exists:modelos,id',
+            'modelo_fixo' => 'nullable|string|in:modelo1,modelo2,modelo3',
+            'paciente' => 'required|string|max:255',
+        ]);
+
+        $placeholders = [
+            '{{paciente}}' => $request->paciente,
+            '{{sexo_paciente}}' => $request->sexo_paciente,
+            '{{acompanhante}}' => $request->acompanhante,
+            '{{parentesco}}' => $request->parentesco,
+            '{{sexo_acompanhante}}' => $request->sexo_acompanhante,
+            '{{estado_paciente}}' => $request->estado_paciente,
+            '{{motivo_internacao}}' => $request->motivo_internacao,
+            '{{com_quem_reside}}' => $request->com_quem_reside,
+            '{{rede_apoio}}' => $request->rede_apoio,
+            '{{fonte_renda}}' => $request->fonte_renda,
+            '{{local_origem}}' => $request->local_origem,
+            '{{data}}' => now()->format('d/m/Y'),
+            '{{profissional}}' => auth()->user()->name,
+            '{{cress}}' => auth()->user()->cress,
+        ];
+
+        $modelo_nome = null;
+        $conteudo = '';
+
+        if ($request->filled('modelo_id')) {
+            $modelo = Modelo::findOrFail($request->modelo_id);
+            $modelo_nome = $modelo->titulo;
+            $conteudo = str_replace(array_keys($placeholders), array_values($placeholders), $modelo->conteudo);
+        } elseif ($request->filled('modelo_fixo')) {
+            $modelo_nome = strtoupper($request->modelo_fixo);
+            $conteudo = $modeloService->gerarConteudo($request->modelo_fixo, $placeholders);
+        } else {
+            return back()->withErrors(['modelo' => 'Você precisa selecionar um modelo fixo ou personalizado.']);
+        }
+
+        // Aplica os tratamentos de gênero e formatação
+        $conteudo = TextHelper::tratarGeneroPaciente($conteudo, $request->sexo_paciente);
+        $conteudo = TextHelper::tratarGeneroAcompanhante($conteudo, $request->sexo_acompanhante);
+        $conteudo = TextHelper::formatarTexto($conteudo, $request->paciente);
+
+        $evolucao = Evolucao::create([
+            'user_id' => auth()->id(),
+            'paciente_nome' => $request->paciente,
+            'modelo_nome' => $modelo_nome,
+            'conteudo' => $conteudo,
+        ]);
+
+        return redirect()->route('evolucoes.resultado', $evolucao->id);
+    }
+
+    public function index(Request $request)
+    {
+        $query = auth()->user()->evolucoes()->latest();
+
+        if ($request->filled('paciente')) {
+            $query->where('paciente_nome', 'like', '%' . $request->paciente . '%');
+        }
+
+        if ($request->filled('periodo')) {
+            match ($request->periodo) {
+                'hoje' => $query->whereDate('created_at', now()->toDateString()),
+                '7dias' => $query->where('created_at', '>=', now()->subDays(7)),
+                'mes' => $query->whereMonth('created_at', now()->month),
+                default => null,
+            };
+        }
+
+        $evolucoes = $query->paginate(10)->withQueryString();
+
+        return view('evolucoes.index', compact('evolucoes'));
+    }
+
+    public function exportarPdf(Request $request)
+    {
+        $query = auth()->user()->evolucoes()->latest();
+
+        if ($request->filled('paciente')) {
+            $query->where('paciente_nome', 'like', '%' . $request->paciente . '%');
+        }
+
+        if ($request->filled('periodo')) {
+            match ($request->periodo) {
+                'hoje' => $query->whereDate('created_at', now()->toDateString()),
+                '7dias' => $query->where('created_at', '>=', now()->subDays(7)),
+                'mes' => $query->whereMonth('created_at', now()->month),
+                default => null,
+            };
+        }
+
+        $evolucoes = $query->get();
+
+        $pdf = Pdf::loadView('evolucoes.exportar', compact('evolucoes'));
+
+        return $pdf->download('evolucoes-filtradas.pdf');
+    }
+
+    public function exportarPdfUnico(Evolucao $evolucao)
+    {
+        if ($evolucao->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $pdf = Pdf::loadView('evolucoes.exportar_unico', compact('evolucao'));
+
+        return $pdf->download('evolucao-'.$evolucao->id.'.pdf');
+    }
+
+    public function resultado($id)
+    {
+        $evolucao = Evolucao::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        return view('evolucoes.resultado', compact('evolucao'));
+    }
+
+    public function destroy(Evolucao $evolucao)
+    {
+        if ($evolucao->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $evolucao->delete();
+
+        return redirect()
+            ->route('evolucoes.index')
+            ->with('success', 'Evolução excluída com sucesso!');
+    }
+
+}
