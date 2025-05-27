@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-3">
                 <label class="form-label field-label">Sexo</label>
-                <select name="sexo_paciente" id="input_sexo_paciente" class="form-select input-purple" {{ !in_array('sexo_paciente', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
+                <select name="sexo_paciente" id="input_sexo_paciente" class="form-select input-purple" required>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
                 </select>
@@ -65,7 +65,7 @@
             </div>
             <div class="col-md-3">
                 <label class="form-label field-label">Sexo</label>
-                <select name="sexo_acompanhante" id="input_sexo_acompanhante" class="form-select input-purple" {{ !in_array('sexo_acompanhante', $placeholders ?? []) ? 'disabled class=input-disabled' : '' }}>
+                <select name="sexo_acompanhante" id="input_sexo_acompanhante" class="form-select input-purple" required>
                     <option value="Feminino">Feminino</option>
                     <option value="Masculino">Masculino</option>
                 </select>

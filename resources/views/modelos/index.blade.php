@@ -15,12 +15,10 @@
     @php
         $placeholders = [
             'paciente' => 'Nome do paciente',
-            'sexo_paciente' => 'Sexo do paciente',
             'estado_paciente' => 'Estado clínico do paciente',
             'motivo_internacao' => 'Motivo da internação',
             'acompanhante' => 'Nome do acompanhante',
             'parentesco' => 'Parentesco com o paciente',
-            'sexo_acompanhante' => 'Sexo do acompanhante',
             'com_quem_reside' => 'Com quem reside',
             'rede_apoio' => 'Rede de apoio',
             'fonte_renda' => 'Fonte de renda',
@@ -131,9 +129,9 @@
             <div class="modal-body px-4 py-3">
                 <h5 class="mb-3">🧠 Exemplo de modelo</h5>
                 <pre class="bg-light p-3 rounded small mb-4" style="line-height: 1.8;">
-Paciente <span class="text-danger">@{{paciente}}</span>, do sexo <span class="text-danger">@{{sexo_paciente}}</span>, encontra-se em <span class="text-danger">@{{estado_paciente}}</span> e recebeu alta hospitalar nesta data, após internação motivada por <span class="text-danger">@{{motivo_internacao}}</span>.
+Paciente <span class="text-danger">@{{paciente}}</span>, encontra-se em <span class="text-danger">@{{estado_paciente}}</span> e recebeu alta hospitalar nesta data, após internação motivada por <span class="text-danger">@{{motivo_internacao}}</span>.
 
-O(a) acompanhante é <span class="text-danger">@{{acompanhante}}</span>, <span class="text-danger">@{{sexo_acompanhante}}</span>, com vínculo de <span class="text-danger">@{{parentesco}}</span>. Relata-se que reside com <span class="text-danger">@{{com_quem_reside}}</span>, com rede de apoio composta por <span class="text-danger">@{{rede_apoio}}</span>. Fonte de renda: <span class="text-danger">@{{fonte_renda}}</span>. Admissão via <span class="text-danger">@{{local_origem}}</span>.
+O(a) acompanhante é <span class="text-danger">@{{acompanhante}}</span>, com vínculo de <span class="text-danger">@{{parentesco}}</span>. Relata-se que reside com <span class="text-danger">@{{com_quem_reside}}</span>, com rede de apoio composta por <span class="text-danger">@{{rede_apoio}}</span>. Fonte de renda: <span class="text-danger">@{{fonte_renda}}</span>. Admissão via <span class="text-danger">@{{local_origem}}</span>.
 
 Atendimento por <span class="text-danger">@{{profissional}}</span> – Assistente Social  
 CRESS <span class="text-danger">@{{cress}}</span> – <span class="text-danger">@{{data}}</span>

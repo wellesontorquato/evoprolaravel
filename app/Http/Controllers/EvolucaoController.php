@@ -38,7 +38,7 @@ class EvolucaoController extends Controller
     {
         $request->validate([
             'modelo_id' => 'nullable|exists:modelos,id',
-            'modelo_fixo' => 'nullable|string|in:modelo1,modelo2,modelo3',
+            'modelo_fixo' => 'nullable|string',
             'paciente' => 'required|string|max:255',
         ]);
 
@@ -73,10 +73,10 @@ class EvolucaoController extends Controller
             return back()->withErrors(['modelo' => 'Você precisa selecionar um modelo fixo ou personalizado.']);
         }
 
-        // Aplica os tratamentos de gênero e formatação com segurança
-        $conteudo = TextHelper::tratarGeneroPaciente($conteudo, $request->sexo_paciente ?? '');
-        $conteudo = TextHelper::tratarGeneroAcompanhante($conteudo, $request->sexo_acompanhante ?? '');
-        $conteudo = TextHelper::formatarTexto($conteudo, $request->paciente);
+        // Aplica os tratamentos de gênero e formatação
+        $conteudo = TextHelper::tratarGeneroPaciente($conteudo, $request->sexo_paciente);
+        $conteudo = TextHelper::tratarGeneroAcompanhante($conteudo, $request->sexo_acompanhante);
+        $conteudo = TextHelper::formatarTexto($conteudo);
 
         $evolucao = Evolucao::create([
             'user_id' => auth()->id(),
