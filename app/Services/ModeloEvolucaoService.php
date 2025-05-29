@@ -43,6 +43,10 @@ Paciente {{paciente}}, residente com {{com_quem_reside}}, possui como principal 
         'parecer_beneficio' => "
 Considerando os dados levantados no atendimento à(ao) paciente {{paciente}}, que reside com {{com_quem_reside}} e tem como renda principal {{fonte_renda}}, avalia-se a necessidade de encaminhamento para benefício social. O(a) paciente encontra-se {{estado_paciente}} e possui rede de apoio limitada: {{rede_apoio}}. Sendo assim, o Serviço Social recomenda encaminhamento junto ao setor competente, com base na vulnerabilidade observada.
     ",
+
+        'acolhimento_obstetrico' => "
+Acolhimento realizado com a usuária {{paciente}}, acompanhada de {{acompanhante}}, {{parentesco}}. Gestação: {{gestacao}}, parto {{tipo_parto}}, com nascimento de RN do sexo {{sexo_rn}}. Reside com {{com_quem_reside}}. Renda familiar proveniente de {{fonte_renda}}. Foram repassadas orientações referentes a direitos sociais, bem como sobre normas e rotinas institucionais. O Serviço Social segue acompanhando a usuária e permanece à disposição.
+    ",
 ];
 
     public function getFixos(): array

@@ -25,5 +25,8 @@
     </option> 
     <option value="parecer_beneficio" {{ request('modelo_fixo') == 'parecer_beneficio' ? 'selected' : '' }}>
         Parecer para Concessão de Benefício
+    </option>
+    <option value="acolhimento_obstetrico" {{ request('modelo_fixo') == 'acolhimento_obstetrico' ? 'selected' : '' }}>
+        Acolhimento Obstétrico e Orientações Sociais
     </option> 
 </optgroup>

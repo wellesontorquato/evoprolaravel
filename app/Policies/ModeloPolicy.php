@@ -22,4 +22,12 @@ class ModeloPolicy
     {
         return $user->id === $modelo->user_id;
     }
+
+        /**
+     * Permite visualizar apenas se for o dono
+     */
+    public function view(User $user, Modelo $modelo): bool
+    {
+        return $user->id === $modelo->user_id;
+    }
 }

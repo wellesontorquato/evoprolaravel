@@ -36,12 +36,19 @@ class EvolucaoController extends Controller
 
     public function store(Request $request, ModeloEvolucaoService $modeloService)
     {
+        // Verifica se algum modelo foi escolhido
+        if (!$request->filled('modelo_id') && !$request->filled('modelo_fixo')) {
+            return back()->withErrors(['modelo' => 'Você precisa selecionar um modelo fixo ou personalizado.']);
+        }
+
+        // Valida os campos mínimos exigidos
         $request->validate([
+            'paciente' => 'required|string|max:255',
             'modelo_id' => 'nullable|exists:modelos,id',
             'modelo_fixo' => 'nullable|string',
-            'paciente' => 'required|string|max:255',
         ]);
 
+        // Prepara placeholders padrão
         $placeholders = [
             '{{paciente}}' => $request->paciente,
             '{{sexo_paciente}}' => $request->sexo_paciente,
@@ -54,6 +61,9 @@ class EvolucaoController extends Controller
             '{{rede_apoio}}' => $request->rede_apoio,
             '{{fonte_renda}}' => $request->fonte_renda,
             '{{local_origem}}' => $request->local_origem,
+            '{{gestacao}}' => $request->gestacao,
+            '{{tipo_parto}}' => $request->tipo_parto,
+            '{{sexo_rn}}' => $request->sexo_rn,
             '{{data}}' => now()->format('d/m/Y'),
             '{{profissional}}' => auth()->user()->name,
             '{{cress}}' => auth()->user()->cress,
@@ -69,11 +79,9 @@ class EvolucaoController extends Controller
         } elseif ($request->filled('modelo_fixo')) {
             $modelo_nome = strtoupper($request->modelo_fixo);
             $conteudo = $modeloService->gerarConteudo($request->modelo_fixo, $placeholders);
-        } else {
-            return back()->withErrors(['modelo' => 'Você precisa selecionar um modelo fixo ou personalizado.']);
         }
 
-        // Aplica os tratamentos de gênero e formatação
+        // Aplica ajustes de gênero e formatação final
         $conteudo = TextHelper::tratarGeneroPaciente($conteudo, $request->sexo_paciente);
         $conteudo = TextHelper::tratarGeneroAcompanhante($conteudo, $request->sexo_acompanhante);
         $conteudo = TextHelper::formatarTexto($conteudo);

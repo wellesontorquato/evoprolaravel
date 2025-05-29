@@ -25,7 +25,10 @@
             'local_origem' => 'Local de origem',
             'data' => 'Data da evolução',
             'profissional' => 'Profissional logado',
-            'cress' => 'Número do CRESS'
+            'cress' => 'Número do CRESS',
+            'gestacao' => 'Número da gestação',
+            'tipo_parto' => 'Tipo de parto',
+            'sexo_rn' => 'Sexo do recém-nascido'
         ];
     @endphp
 
@@ -131,12 +134,13 @@
                 <pre class="bg-light p-3 rounded small mb-4" style="line-height: 1.8;">
 Paciente <span class="text-danger">@{{paciente}}</span>, encontra-se em <span class="text-danger">@{{estado_paciente}}</span> e recebeu alta hospitalar nesta data, após internação motivada por <span class="text-danger">@{{motivo_internacao}}</span>.
 
+Gestação: <span class="text-danger">@{{gestacao}}</span>, parto <span class="text-danger">@{{tipo_parto}}</span>, com nascimento de RN do sexo <span class="text-danger">@{{sexo_rn}}</span>.
+
 O(a) acompanhante é <span class="text-danger">@{{acompanhante}}</span>, com vínculo de <span class="text-danger">@{{parentesco}}</span>. Relata-se que reside com <span class="text-danger">@{{com_quem_reside}}</span>, com rede de apoio composta por <span class="text-danger">@{{rede_apoio}}</span>. Fonte de renda: <span class="text-danger">@{{fonte_renda}}</span>. Admissão via <span class="text-danger">@{{local_origem}}</span>.
 
 Atendimento por <span class="text-danger">@{{profissional}}</span> – Assistente Social  
 CRESS <span class="text-danger">@{{cress}}</span> – <span class="text-danger">@{{data}}</span>
 </pre>
-
 
                 <h5 class="mb-3">🔧 O que será ajustado automaticamente:</h5>
                 <ul class="small" style="line-height: 1.6">

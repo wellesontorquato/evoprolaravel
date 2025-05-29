@@ -27,7 +27,7 @@ class ModeloController extends Controller
 
         return redirect()
             ->back()
-            ->withInput(['_action' => 'salvar']) // <- usado para controle no index
+            ->withInput(['_action' => 'salvar'])
             ->with('success', 'Modelo criado com sucesso!');
     }
 
@@ -44,7 +44,7 @@ class ModeloController extends Controller
 
         return redirect()
             ->back()
-            ->withInput(['_action' => 'salvar']) // <- usado para controle no index
+            ->withInput(['_action' => 'salvar'])
             ->with('success', 'Modelo atualizado com sucesso!');
     }
 
@@ -54,5 +54,21 @@ class ModeloController extends Controller
         $modelo->delete();
 
         return redirect()->back()->with('success', 'Modelo excluído com sucesso!');
+    }
+
+    /**
+     * Retorna os placeholders dinâmicos do modelo selecionado
+     */
+    public function placeholders(Modelo $modelo)
+    {
+        $this->authorize('view', $modelo);
+
+        // Extrai os placeholders com formato {{nome_placeholder}}
+        preg_match_all('/\{\{\s*(.*?)\s*\}\}/', $modelo->conteudo, $matches);
+
+        // Remove duplicados e organiza
+        $placeholders = array_unique($matches[1]);
+
+        return response()->json($placeholders);
     }
 }

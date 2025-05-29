@@ -61,6 +61,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/{modelo}', [ModeloController::class, 'update'])->name('update');
         Route::delete('/{modelo}', [ModeloController::class, 'destroy'])->name('destroy');
     });
+
+    Route::get('/modelo/{modelo}/placeholders', [ModeloController::class, 'placeholders'])
+    ->name('modelos.placeholders');
 });
 
 require __DIR__ . '/auth.php';
