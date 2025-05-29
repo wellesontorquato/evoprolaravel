@@ -124,11 +124,11 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label field-label">Número da Gestação</label>
-                    <input type="text" name="gestacao" class="form-control input-purple" placeholder="Ex: 1ª, 2ª, 3ª...">
+                    <input type="text" name="gestacao" class="form-control input-purple" placeholder="Ex: primeira, segunda, terceira...">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label field-label">Tipo de Parto</label>
-                    <input type="text" name="tipo_parto" class="form-control input-purple" placeholder="Ex: normal, cesáreo, fórceps...">
+                    <input type="text" name="tipo_parto" class="form-control input-purple" placeholder="Ex: normal, cesáreo...">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label field-label">Sexo do Recém-Nascido</label>
