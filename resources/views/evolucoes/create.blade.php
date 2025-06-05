@@ -93,9 +93,9 @@
             </div>
         </div>
 
-        {{-- Informações Adicionais --}}
+        {{-- 🏡 Habitação, Renda e Apoio --}}
         <div class="dynamic-section d-none" data-placeholder="com_quem_reside">
-            <h5 class="fw-bold section-title mb-3">🏡 Informações Adicionais</h5>
+            <h5 class="fw-bold section-title mb-3">🏡 Habitação, Renda e Apoio</h5>
             <hr class="mb-3 mt-0 section-line">
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -107,17 +107,37 @@
                     <input type="text" name="fonte_renda" class="form-control input-purple" placeholder="Ex: aposentadoria, auxílio, salário mínimo...">
                 </div>
                 <div class="col-md-6 mt-3">
+                    <label class="form-label field-label">Estabilidade da Renda</label>
+                    <input type="text" name="estabilidade_renda" class="form-control input-purple" placeholder="Ex: estável, instável, variável...">
+                </div>
+                <div class="col-md-6 mt-3">
                     <label class="form-label field-label">Rede de Apoio</label>
                     <input type="text" name="rede_apoio" class="form-control input-purple" placeholder="Ex: filha, neto, vizinhos...">
                 </div>
                 <div class="col-md-6 mt-3">
+                    <label class="form-label field-label">Rede de Acompanhantes</label>
+                    <input type="text" name="rede_acompanhantes" class="form-control input-purple" placeholder="Ex: filhas, esposo, irmãos...">
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label class="form-label field-label">Tipo de Imóvel</label>
+                    <input type="text" name="tipo_imovel" class="form-control input-purple" placeholder="Ex: próprio, alugado, cedido...">
+                </div>
+            </div>
+        </div>
+
+        {{-- 🌍 Local de Origem --}}
+        <div class="dynamic-section d-none" data-placeholder="local_origem">
+            <h5 class="fw-bold section-title mb-3">🌍 Local de Origem</h5>
+            <hr class="mb-3 mt-0 section-line">
+            <div class="row mb-3">
+                <div class="col-md-6">
                     <label class="form-label field-label">Local de Origem</label>
                     <input type="text" name="local_origem" class="form-control input-purple" placeholder="Ex: UPA Benedito Bentes, hospital de referência...">
                 </div>
             </div>
         </div>
 
-        {{-- Campos Obstétricos --}}
+        {{-- 🤰 Dados Obstétricos --}}
         <div class="dynamic-section d-none" data-placeholder="gestacao">
             <h5 class="fw-bold section-title mb-3">🤰 Dados Obstétricos</h5>
             <hr class="mb-3 mt-0 section-line">
@@ -177,6 +197,12 @@
         transition: max-height 0.6s ease-in-out;
         overflow: hidden;
     }
+
+    .input-disabled {
+        background-color: #f0f0f0 !important;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
 </style>
 
 <script>
@@ -186,31 +212,51 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('form-dinamico');
 
     const placeholdersFixos = {
-        acolhimento_social: ['paciente', 'acompanhante', 'parentesco', 'estado_paciente', 'motivo_internacao', 'com_quem_reside', 'fonte_renda', 'rede_apoio'],
-        situacao_economica: ['paciente', 'acompanhante', 'parentesco', 'estado_paciente', 'local_origem', 'motivo_internacao', 'com_quem_reside', 'fonte_renda', 'rede_apoio'],
-        planejamento_de_intervencoes: ['paciente', 'acompanhante', 'parentesco', 'estado_paciente', 'motivo_internacao', 'com_quem_reside', 'rede_apoio', 'fonte_renda'],
-        alta_hospitalar: ['paciente', 'data', 'motivo_internacao', 'estado_paciente', 'rede_apoio', 'com_quem_reside', 'fonte_renda'],
-        encaminhamento_social: ['paciente', 'local_origem', 'rede_apoio', 'fonte_renda', 'com_quem_reside', 'estado_paciente'],
-        visita_domiciliar: ['paciente', 'data', 'acompanhante', 'parentesco', 'estado_paciente', 'com_quem_reside', 'fonte_renda', 'rede_apoio'],
-        internacao_psiquiatrica: ['paciente', 'local_origem', 'motivo_internacao', 'estado_paciente', 'acompanhante', 'parentesco', 'com_quem_reside', 'rede_apoio'],
-        avaliacao_socioeconomica: ['paciente', 'com_quem_reside', 'fonte_renda', 'estado_paciente', 'rede_apoio', 'acompanhante', 'parentesco', 'data'],
-        parecer_beneficio: ['paciente', 'com_quem_reside', 'fonte_renda', 'estado_paciente', 'rede_apoio'],
-        acolhimento_obstetrico: ['paciente', 'acompanhante', 'parentesco', 'gestacao', 'tipo_parto', 'sexo_rn', 'com_quem_reside', 'fonte_renda'],
+        acolhimento_social: ['paciente', 'acompanhante', 'parentesco', 'estado_paciente', 'motivo_internacao', 'com_quem_reside', 'fonte_renda', 'rede_apoio', 'sexo_paciente', 'sexo_acompanhante'],
+        situacao_economica: ['paciente', 'acompanhante', 'parentesco', 'estado_paciente', 'local_origem', 'motivo_internacao', 'com_quem_reside', 'fonte_renda', 'rede_apoio', 'sexo_paciente', 'sexo_acompanhante'],
+        planejamento_de_intervencoes: ['paciente', 'acompanhante', 'parentesco', 'estado_paciente', 'motivo_internacao', 'com_quem_reside', 'rede_apoio', 'fonte_renda', 'sexo_paciente', 'sexo_acompanhante'],
+        alta_hospitalar: ['paciente', 'data', 'motivo_internacao', 'estado_paciente', 'rede_apoio', 'com_quem_reside', 'fonte_renda', 'sexo_paciente', 'sexo_acompanhante'],
+        encaminhamento_social: ['paciente', 'local_origem', 'rede_apoio', 'fonte_renda', 'com_quem_reside', 'estado_paciente', 'sexo_paciente', 'sexo_acompanhante'],
+        visita_domiciliar: ['paciente', 'data', 'acompanhante', 'parentesco', 'estado_paciente', 'com_quem_reside', 'fonte_renda', 'rede_apoio', 'sexo_paciente', 'sexo_acompanhante'],
+        internacao_psiquiatrica: ['paciente', 'local_origem', 'motivo_internacao', 'estado_paciente', 'acompanhante', 'parentesco', 'com_quem_reside', 'rede_apoio', 'sexo_paciente', 'sexo_acompanhante'],
+        avaliacao_socioeconomica: ['paciente', 'com_quem_reside', 'fonte_renda', 'estado_paciente', 'rede_apoio', 'acompanhante', 'parentesco', 'data', 'sexo_paciente', 'sexo_acompanhante'],
+        parecer_beneficio: ['paciente', 'com_quem_reside', 'fonte_renda', 'estado_paciente', 'rede_apoio', 'sexo_paciente', 'sexo_acompanhante'],
+        acolhimento_obstetrico: ['paciente', 'acompanhante', 'parentesco', 'gestacao', 'tipo_parto', 'sexo_rn', 'com_quem_reside', 'fonte_renda', 'sexo_paciente', 'sexo_acompanhante'],
+        avaliacao_leito: ['paciente', 'acompanhante', 'parentesco', 'estado_paciente', 'com_quem_reside', 'fonte_renda', 'rede_apoio', 'tipo_imovel', 'estabilidade_renda', 'rede_acompanhantes', 'sexo_paciente', 'sexo_acompanhante'],
     };
 
     function exibirCampos(placeholders) {
         form.style.maxHeight = '2000px';
-        form.style.transition = 'max-height 0.6s ease-in-out';
         form.scrollIntoView({ behavior: 'smooth' });
 
-        document.querySelectorAll('.dynamic-section').forEach(section => {
-            section.classList.add('d-none');
-        });
+        const sections = document.querySelectorAll('.dynamic-section');
 
-        placeholders.forEach(ph => {
-            const section = document.querySelector(`.dynamic-section[data-placeholder="${ph}"]`);
-            if (section) {
+        sections.forEach(section => {
+            const campos = section.querySelectorAll('input[name], textarea[name], select[name]');
+            let algumCampoValido = false;
+
+            campos.forEach(campo => {
+                const nome = campo.name?.replace(/\[\]$/, '');
+                const valido = placeholders.includes(nome);
+
+                if (valido) {
+                    campo.removeAttribute('readonly');
+                    campo.removeAttribute('disabled');
+                    campo.classList.remove('input-disabled');
+                    algumCampoValido = true;
+                } else {
+                    campo.setAttribute('readonly', 'readonly');
+                    if (campo.tagName === 'SELECT') {
+                        campo.setAttribute('disabled', 'disabled');
+                    }
+                    campo.classList.add('input-disabled');
+                }
+            });
+
+            if (algumCampoValido) {
                 section.classList.remove('d-none');
+            } else {
+                section.classList.add('d-none');
             }
         });
     }
@@ -221,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!modeloId) return;
 
             if (selectFixo) selectFixo.value = '';
+            document.getElementById('input_modelo_fixo').value = '';
 
             fetch(`/modelo/${modeloId}/placeholders`)
                 .then(response => {
@@ -247,7 +294,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('input_modelo_id').value = '';
             document.getElementById('input_modelo_fixo').value = modeloFixo;
 
-
             const placeholders = placeholdersFixos[modeloFixo] || [];
             exibirCampos(placeholders);
         });
@@ -255,3 +301,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endsection
+

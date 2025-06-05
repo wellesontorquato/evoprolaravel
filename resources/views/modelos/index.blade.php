@@ -17,20 +17,24 @@
             'paciente' => 'Nome do paciente',
             'estado_paciente' => 'Estado clínico do paciente',
             'motivo_internacao' => 'Motivo da internação',
+            'local_origem' => 'Local de origem',
+            'tipo_imovel' => 'Tipo do imóvel',
+            'estabilidade_renda' => 'Estabilidade da renda',
             'acompanhante' => 'Nome do acompanhante',
             'parentesco' => 'Parentesco com o paciente',
             'com_quem_reside' => 'Com quem reside',
             'rede_apoio' => 'Rede de apoio',
+            'rede_acompanhantes' => 'Rede de acompanhantes durante a internação',
             'fonte_renda' => 'Fonte de renda',
-            'local_origem' => 'Local de origem',
-            'data' => 'Data da evolução',
-            'profissional' => 'Profissional logado',
-            'cress' => 'Número do CRESS',
             'gestacao' => 'Número da gestação',
             'tipo_parto' => 'Tipo de parto',
-            'sexo_rn' => 'Sexo do recém-nascido'
+            'sexo_rn' => 'Sexo do recém-nascido',
+            'profissional' => 'Profissional logado',
+            'cress' => 'Número do CRESS',
+            'data' => 'Data da evolução',
         ];
     @endphp
+
 
     @forelse($modelos as $modelo)
         <div class="card mb-2">

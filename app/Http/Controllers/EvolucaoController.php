@@ -36,24 +36,31 @@ class EvolucaoController extends Controller
 
     public function store(Request $request, ModeloEvolucaoService $modeloService)
     {
-        // Verifica se algum modelo foi escolhido
         if (!$request->filled('modelo_id') && !$request->filled('modelo_fixo')) {
             return back()->withErrors(['modelo' => 'Você precisa selecionar um modelo fixo ou personalizado.']);
         }
 
-        // Valida os campos mínimos exigidos
         $request->validate([
             'paciente' => 'required|string|max:255',
             'modelo_id' => 'nullable|exists:modelos,id',
             'modelo_fixo' => 'nullable|string',
         ]);
 
-        // Prepara placeholders padrão
+        // Corrige o parentesco com base no gênero do acompanhante
+        $parentescoCorrigido = TextHelper::ajustarParentesco(
+            $request->parentesco,
+            $request->sexo_acompanhante
+        );
+
+        // Calcula pronome possessivo do acompanhante (ex: seu / sua)
+        $pronomeAcomp = TextHelper::obterPronomePosseAcompanhante($request->sexo_acompanhante ?? null);
+
+        // Substituição dos placeholders
         $placeholders = [
             '{{paciente}}' => $request->paciente,
             '{{sexo_paciente}}' => $request->sexo_paciente,
             '{{acompanhante}}' => $request->acompanhante,
-            '{{parentesco}}' => $request->parentesco,
+            '{{parentesco}}' => $parentescoCorrigido,
             '{{sexo_acompanhante}}' => $request->sexo_acompanhante,
             '{{estado_paciente}}' => $request->estado_paciente,
             '{{motivo_internacao}}' => $request->motivo_internacao,
@@ -64,6 +71,10 @@ class EvolucaoController extends Controller
             '{{gestacao}}' => $request->gestacao,
             '{{tipo_parto}}' => $request->tipo_parto,
             '{{sexo_rn}}' => $request->sexo_rn,
+            '{{tipo_imovel}}' => $request->tipo_imovel,
+            '{{estabilidade_renda}}' => $request->estabilidade_renda,
+            '{{rede_acompanhantes}}' => $request->rede_acompanhantes,
+            '{{pronome_acomp}}' => $pronomeAcomp,
             '{{data}}' => now()->format('d/m/Y'),
             '{{profissional}}' => auth()->user()->name,
             '{{cress}}' => auth()->user()->cress,
@@ -81,9 +92,10 @@ class EvolucaoController extends Controller
             $conteudo = $modeloService->gerarConteudo($request->modelo_fixo, $placeholders);
         }
 
-        // Aplica ajustes de gênero e formatação final
+        // Etapas de ajuste com base no gênero
         $conteudo = TextHelper::tratarGeneroPaciente($conteudo, $request->sexo_paciente);
         $conteudo = TextHelper::tratarGeneroAcompanhante($conteudo, $request->sexo_acompanhante);
+        $conteudo = TextHelper::ajustarGenericosEntreParenteses($conteudo, $request->sexo_acompanhante);
         $conteudo = TextHelper::formatarTexto($conteudo);
 
         $evolucao = Evolucao::create([

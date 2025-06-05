@@ -29,4 +29,7 @@
     <option value="acolhimento_obstetrico" {{ request('modelo_fixo') == 'acolhimento_obstetrico' ? 'selected' : '' }}>
         Acolhimento Obstétrico e Orientações Sociais
     </option> 
+    <option value="avaliacao_leito" {{ request('modelo_fixo') == 'avaliacao_leito' ? 'selected' : '' }}>
+        Avaliação de Contexto Social no Leito
+    </option>
 </optgroup>
